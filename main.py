@@ -1,11 +1,8 @@
 import data_preprocessing as dp
-from SVM_classifier import SVMClassifier as SVMBasicClassifier
 from SVMClassifierKernel import SVMClassifier as SVMKernelClassifier
-from LogisticRegression import LogisticRegression
 from LogisticRegressionKernel import LogisticRegression as LogisticRegressionKernel
-from metrics import Metrics
-from cross_validation import CrossValidation
 from hyperparameter_tuning import HyperparameterTuning
+from metrics import Metrics
 import numpy as np
 
 def main():
