@@ -11,6 +11,7 @@ class LogisticRegression:
         self.weights = None
         self.bias = None
         self.X_train = None  # Store training data for kernel computation
+        self.loss_history = []  # Track loss over iterations
         print("Logistic Regression initialized with learning_rate={}, number_of_iterations={}, kernel={}".format(
             learning_rate, number_of_iterations, kernel))
     
@@ -33,6 +34,16 @@ class LogisticRegression:
         else:
             raise ValueError("Unsupported kernel type. Use 'linear', 'polynomial', or 'rbf'")
     
+    def calculate_loss(self, y_hat, y):
+        """Calculate binary cross-entropy loss"""
+        # Clip predictions to prevent log(0)
+        epsilon = 1e-15
+        y_hat = np.clip(y_hat, epsilon, 1 - epsilon)
+        
+        # Binary cross-entropy loss
+        loss = -np.mean(y * np.log(y_hat) + (1 - y) * np.log(1 - y_hat))
+        return loss
+    
     # Fit the model to the training data
     def fit(self, X, y):
         self.X_train = X  # Store training data
@@ -53,6 +64,13 @@ class LogisticRegression:
         # Gradient descent
         for i in range(self.number_of_iterations):
             self.update_weights()
+            
+            # Calculate and store loss every iteration (or every N iterations for efficiency)
+            if i % 10 == 0:  # Calculate every 10 iterations to save computation
+                Z = np.dot(self.X, self.weights) + self.bias
+                y_hat = 1 / (1 + np.exp(-Z))
+                loss = self.calculate_loss(y_hat, self.y)
+                self.loss_history.append(loss)
             
     def update_weights(self):
         
