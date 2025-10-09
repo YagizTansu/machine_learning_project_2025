@@ -34,7 +34,6 @@ class CrossValidation:
 
             accuracy = np.mean(predictions == y_test)
             accuracies.append(accuracy)
-            print(f"Fold {fold_idx + 1}/{self.k_folds}, Accuracy: {accuracy:.4f}")
 
         average_accuracy = np.mean(accuracies)
         print(f"Average Accuracy over {self.k_folds} folds: {average_accuracy:.4f}")

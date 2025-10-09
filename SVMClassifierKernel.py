@@ -15,35 +15,35 @@ class SVMClassifier():
         self.b = None
         self.X = None
         self.y = None
+        self.K = None  # Kernel matrisi için
         self.loss_history = []
         self.accuracy_history = []
 
-        print("SVM Classifier initialized with learning_rate={}, number_of_iterations={}, lambda_param={}, kernel={}".format(
-            learning_rate, number_of_iterations, lambda_param, kernel))
-
-    def kernel_function(self, x1, x2):
+    def kernel_function(self, X1, X2=None):
+        """Vectorized kernel computation"""
+        if X2 is None:
+            X2 = X1
+            
         if self.kernel == 'linear':
-            return np.dot(x1, x2)
+            return np.dot(X1, X2.T)
         elif self.kernel == 'polynomial':
-            return (np.dot(x1, x2) + 1) ** self.degree
+            return (np.dot(X1, X2.T) + 1) ** self.degree
         elif self.kernel == 'rbf':
-            squared_distance = np.sum((x1 - x2) ** 2)
-            return np.exp(-self.gamma * squared_distance)
+            # Vectorized RBF kernel
+            X1_norm = np.sum(X1**2, axis=1).reshape(-1, 1)
+            X2_norm = np.sum(X2**2, axis=1).reshape(1, -1)
+            squared_dists = X1_norm + X2_norm - 2 * np.dot(X1, X2.T)
+            return np.exp(-self.gamma * squared_dists)
         else:
-            return np.dot(x1, x2)
+            return np.dot(X1, X2.T)
 
     def calculate_loss(self):
         y_labels = np.where(self.y <= 0, -1, 1)
         
         if self.kernel == 'rbf':
-            margins = []
-            for index, x_i in enumerate(self.X):
-                kernel_values = np.array([self.kernel_function(x_i, x_j) for x_j in self.X])
-                margin = y_labels[index] * (np.dot(kernel_values, self.w) - self.b)
-                margins.append(margin)
-            margins = np.array(margins)
+            # Kernel matrisi ile vektörize hesaplama
+            margins = y_labels * (np.dot(self.K, self.w) - self.b)
         else:
-            # Linear ve polynomial için düzeltme: w.T @ X.T hesaplanmalı
             margins = y_labels * (np.dot(self.X, self.w) - self.b)
         
         hinge_loss = np.maximum(0, 1 - margins)
@@ -54,7 +54,9 @@ class SVMClassifier():
     def fit(self, X, y):
         self.m, self.n = X.shape
         
+        # ✅ KERNEL MATRİSİNİ BİR KEZ HESAPLA
         if self.kernel == 'rbf':
+            self.K = self.kernel_function(X, X)  # 7000×7000 - sadece bir kez!
             self.w = np.zeros(self.m)
         else:
             self.w = np.zeros(self.n)
@@ -69,7 +71,6 @@ class SVMClassifier():
                 loss = self.calculate_loss()
                 self.loss_history.append(loss)
                 
-                # Calculate accuracy
                 y_pred = self.predict(X)
                 accuracy = Metrics.accuracy(y, y_pred)
                 self.accuracy_history.append(accuracy)
@@ -78,49 +79,36 @@ class SVMClassifier():
         y_labels = np.where(self.y <= 0, -1, 1)
         
         if self.kernel == 'rbf':
-            # Batch gradient descent için tüm gradient'leri topla
-            dw_total = np.zeros(self.m)
-            db_total = 0
+            # ✅ Önceden hesaplanmış kernel matrisini kullan
+            margins = y_labels * (np.dot(self.K, self.w) - self.b)
             
-            for index, x_i in enumerate(self.X):
-                kernel_values = np.array([self.kernel_function(x_i, x_j) for x_j in self.X])
-                condition = y_labels[index] * (np.dot(kernel_values, self.w) - self.b)
-                
-                if condition >= 1:
-                    dw_total += 2 * self.lambda_param * self.w
-                else:
-                    dw_total += 2 * self.lambda_param * self.w - (kernel_values * y_labels[index])
-                    db_total += y_labels[index]
+            # Vectorized gradient computation
+            misclassified = margins < 1
+            dw = 2 * self.lambda_param * self.w
+            dw -= np.dot(self.K.T, misclassified * y_labels) / self.m
             
-            # Ortalama gradient ile güncelle
-            self.w = self.w - self.learning_rate * (dw_total / self.m)
-            self.b = self.b - self.learning_rate * (db_total / self.m)
+            db = -np.sum(misclassified * y_labels) / self.m
+            
+            self.w -= self.learning_rate * dw
+            self.b -= self.learning_rate * db
         else:
-            # Linear ve polynomial için düzeltilmiş gradient descent
-            dw_total = np.zeros(self.n)
-            db_total = 0
+            margins = y_labels * (np.dot(self.X, self.w) - self.b)
             
-            for index, x_i in enumerate(self.X):
-                condition = y_labels[index] * (np.dot(x_i, self.w) - self.b)
-                
-                if condition >= 1:
-                    dw_total += 2 * self.lambda_param * self.w
-                else:
-                    dw_total += 2 * self.lambda_param * self.w - (x_i * y_labels[index])
-                    db_total += y_labels[index]
+            misclassified = margins < 1
+            dw = 2 * self.lambda_param * self.w
+            dw -= np.dot(self.X.T, misclassified * y_labels) / self.m
             
-            self.w = self.w - self.learning_rate * (dw_total / self.m)
-            self.b = self.b - self.learning_rate * (db_total / self.m)
+            db = -np.sum(misclassified * y_labels) / self.m
+            
+            self.w -= self.learning_rate * dw
+            self.b -= self.learning_rate * db
 
     def predict(self, X):
         if self.kernel == 'rbf':
-            output = []
-            for x in X:
-                kernel_values = np.array([self.kernel_function(x, x_train) for x_train in self.X])
-                output.append(np.dot(kernel_values, self.w) - self.b)
-            output = np.array(output)
+            # Test için kernel hesapla (X_train ile X_test arası)
+            K_test = self.kernel_function(X, self.X)
+            output = np.dot(K_test, self.w) - self.b
         else:
-            # Linear ve polynomial için düzeltme
             output = np.dot(X, self.w) - self.b
         
         predicted_labels = np.sign(output)

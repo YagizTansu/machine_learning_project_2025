@@ -23,17 +23,20 @@ def main():
     X_test_scaled = np.array(X_test_scaled, dtype=np.float64)
     y_train = np.array(y_train)
     y_test = np.array(y_test)
+     
+    svm_param_grid = {
+        'learning_rate': [0.01,0.1],
+        'number_of_iterations': [500, 1000],
+        'lambda_param': [0.01, 0.05],
+        'kernel': [
+            {'kernel': 'linear'},
+            {'kernel': 'polynomial', 'degree': 2},
+            {'kernel': 'polynomial', 'degree': 3},
+            {'kernel': 'rbf', 'gamma': 0.01},
+            {'kernel': 'rbf', 'gamma': 0.1},
+        ]
+    }
     
-    svm_param_grid = [
-        # {'learning_rate': 0.01, 'number_of_iterations': 1000, 'lambda_param': 0.01, 'kernel': 'linear'},
-        # {'learning_rate': 0.01, 'number_of_iterations': 1000, 'lambda_param': 0.01, 'kernel': 'polynomial', 'degree': 2},
-        {'learning_rate': 0.01, 'number_of_iterations': 1000, 'lambda_param': 0.01, 'kernel': 'polynomial', 'degree': 3},
-        # {'learning_rate': 0.01, 'number_of_iterations': 1000, 'lambda_param': 0.01, 'kernel': 'rbf', 'gamma': 0.1},
-        # {'learning_rate': 0.01, 'number_of_iterations': 1000, 'lambda_param': 0.01, 'kernel': 'rbf', 'gamma': 1.0},
-        # {'learning_rate': 0.01, 'number_of_iterations': 1000, 'lambda_param': 0.01, 'kernel': 'rbf', 'gamma': 10.0}
-    ]
-    
-
     # Hyperparameter tuning
     svm_tuner = HyperparameterTuning(SVMKernelClassifier(), svm_param_grid, k_folds=5)
     best_params, best_score = svm_tuner.grid_search(X_train_scaled, y_train)
@@ -50,14 +53,17 @@ def main():
     best_svm_model_test_recall = Metrics.recall(y_test, predictions)
     best_svm_model_test_f1 = Metrics.f1_score(y_test, predictions)
     
-    logistic_param_grid = [
-        # {'learning_rate': 0.01, 'number_of_iterations': 1000, 'kernel': 'linear'},
-        # {'learning_rate': 0.01, 'number_of_iterations': 1000, 'kernel': 'polynomial', 'degree': 2},
-        # {'learning_rate': 0.01, 'number_of_iterations': 1000, 'kernel': 'polynomial', 'degree': 3},
-        {'learning_rate': 0.01, 'number_of_iterations': 1000, 'kernel': 'rbf', 'gamma': 0.1},
-        # {'learning_rate': 0.01, 'number_of_iterations': 1000, 'kernel': 'rbf', 'gamma': 1.0},
-        # {'learning_rate': 0.01, 'number_of_iterations': 1000, 'kernel': 'rbf', 'gamma': 10.0}
+    logistic_param_grid = {
+        'learning_rate': [ 0.01, 0.1],  # 0.001 to 0.1, step 0.01
+        'number_of_iterations': [500, 1000],  # 500 to 2000, step 500
+        'kernel': [
+            {'kernel': 'linear'},
+            {'kernel': 'polynomial', 'degree': 2},
+            {'kernel': 'polynomial', 'degree': 3},
+            {'kernel': 'rbf', 'gamma': 0.1},
+            {'kernel': 'rbf', 'gamma': 1.0},
         ]
+    }
 
     logistic_tuner = HyperparameterTuning(LogisticRegressionKernel(), logistic_param_grid, k_folds=5)
     

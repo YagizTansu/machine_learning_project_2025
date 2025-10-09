@@ -14,8 +14,6 @@ class LogisticRegression:
         self.X_train = None  # Store training data for kernel computation
         self.loss_history = []  # Track loss over iterations
         self.accuracy_history = []  # Track accuracy over iterations
-        print("Logistic Regression initialized with learning_rate={}, number_of_iterations={}, kernel={}".format(
-            learning_rate, number_of_iterations, kernel))
     
     def kernel_function(self, X1, X2=None):
         """Apply kernel transformation"""
