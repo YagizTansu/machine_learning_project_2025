@@ -1,4 +1,5 @@
 import numpy as np
+from metrics import Metrics
 
 class LogisticRegression:
     # declaring the hyperparameters: learning_rate, number_of_iterations, kernel, degree, gamma
@@ -12,6 +13,7 @@ class LogisticRegression:
         self.bias = None
         self.X_train = None  # Store training data for kernel computation
         self.loss_history = []  # Track loss over iterations
+        self.accuracy_history = []  # Track accuracy over iterations
         print("Logistic Regression initialized with learning_rate={}, number_of_iterations={}, kernel={}".format(
             learning_rate, number_of_iterations, kernel))
     
@@ -71,7 +73,12 @@ class LogisticRegression:
                 y_hat = 1 / (1 + np.exp(-Z))
                 loss = self.calculate_loss(y_hat, self.y)
                 self.loss_history.append(loss)
-            
+                
+                # Calculate accuracy
+                y_pred = np.where(y_hat <= 0.5, 0, 1)
+                accuracy = Metrics.accuracy(self.y, y_pred)
+                self.accuracy_history.append(accuracy)
+    
     def update_weights(self):
         
         # linear model which is Z = X.W + b and then applying sigmoid function(y^ = 1 / (1 + e^(-Z)))

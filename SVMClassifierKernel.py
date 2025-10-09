@@ -1,4 +1,5 @@
 import numpy as np
+from metrics import Metrics
 
 class SVMClassifier():
     
@@ -15,6 +16,7 @@ class SVMClassifier():
         self.X = None
         self.y = None
         self.loss_history = []
+        self.accuracy_history = []
 
         print("SVM Classifier initialized with learning_rate={}, number_of_iterations={}, lambda_param={}, kernel={}".format(
             learning_rate, number_of_iterations, lambda_param, kernel))
@@ -66,6 +68,11 @@ class SVMClassifier():
             if i % 10 == 0:
                 loss = self.calculate_loss()
                 self.loss_history.append(loss)
+                
+                # Calculate accuracy
+                y_pred = self.predict(X)
+                accuracy = Metrics.accuracy(y, y_pred)
+                self.accuracy_history.append(accuracy)
         
     def update_weights(self):
         y_labels = np.where(self.y <= 0, -1, 1)
