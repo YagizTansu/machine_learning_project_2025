@@ -15,7 +15,7 @@ class SVMClassifier():
         self.b = None
         self.X = None
         self.y = None
-        self.K = None  # Kernel matrisi için
+        self.K = None  # For kernel matrix
         self.loss_history = []
         self.accuracy_history = []
 
@@ -54,9 +54,9 @@ class SVMClassifier():
     def fit(self, X, y):
         self.m, self.n = X.shape
         
-        # ✅ KERNEL MATRİSİNİ BİR KEZ HESAPLA
+        # ✅ CALCULATE KERNEL MATRIX ONCE
         if self.kernel == 'rbf':
-            self.K = self.kernel_function(X, X)  # 7000×7000 - sadece bir kez!
+            self.K = self.kernel_function(X, X)  # 7000×7000 - only once!
             self.w = np.zeros(self.m)
         else:
             self.w = np.zeros(self.n)
@@ -79,7 +79,7 @@ class SVMClassifier():
         y_labels = np.where(self.y <= 0, -1, 1)
         
         if self.kernel == 'rbf':
-            # ✅ Önceden hesaplanmış kernel matrisini kullan
+            # ✅ Use pre-calculated kernel matrix
             margins = y_labels * (np.dot(self.K, self.w) - self.b)
             
             # Vectorized gradient computation
@@ -105,7 +105,7 @@ class SVMClassifier():
 
     def predict(self, X):
         if self.kernel == 'rbf':
-            # Test için kernel hesapla (X_train ile X_test arası)
+            # Calculate kernel for test (between X_train and X_test)
             K_test = self.kernel_function(X, self.X)
             output = np.dot(K_test, self.w) - self.b
         else:

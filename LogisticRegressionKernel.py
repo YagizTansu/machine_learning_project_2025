@@ -83,11 +83,11 @@ class LogisticRegression:
         Z = np.dot(self.X, self.weights) + self.bias
         y_hat = 1 / (1 + np.exp(-Z))
 
-        #partial derivatives
+        # partial derivatives
         dw = (1 / self.m) * np.dot(self.X.T, (y_hat - self.y))
         db = (1 / self.m) * np.sum(y_hat - self.y)
         
-        #update weights and bias
+        # update weights and bias
         self.weights -= self.learning_rate * dw
         self.bias -= self.learning_rate * db
 
