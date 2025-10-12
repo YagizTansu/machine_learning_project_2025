@@ -60,8 +60,8 @@ def main():
             {'kernel': 'linear'},
             {'kernel': 'polynomial', 'degree': 2},
             {'kernel': 'polynomial', 'degree': 3},
+            {'kernel': 'rbf', 'gamma': 0.01},
             {'kernel': 'rbf', 'gamma': 0.1},
-            {'kernel': 'rbf', 'gamma': 1.0},
         ]
     }
 
