@@ -35,17 +35,21 @@ class SVMClassifier():
         # label encoding: convert all 0 labels to -1 for SVM algorithm
         y_labels = np.where(self.y <= 0, -1, 1)
         
+        # Initialize gradients
+        dw = 0
+        db = 0
+        
         # Iterate through each sample and update weights and bias , Gradients -> dw and db
         for index, x_i in enumerate(self.X):
             if (y_labels[index] * (np.dot(x_i, self.w) - self.b)) >= 1: # yi * (wx - b) >= 1
-                dw = 2 * self.lambda_param * self.w
-                db = 0
-            elif (y_labels[index] * (np.dot(x_i, self.w) - self.b)) < 1: # yi * (wx - b) < 1
-                dw = 2 * self.lambda_param * self.w - (x_i * y_labels[index])
-                db = y_labels[index]
-        
-            self.w = self.w - self.learning_rate * dw
-            self.b = self.b - self.learning_rate * db
+                dw += 2 * self.lambda_param * self.w
+                db += 0
+            else:
+                dw += 2 * self.lambda_param * self.w - (x_i * y_labels[index])
+                db += y_labels[index]
+
+        self.w = self.w - self.learning_rate * (dw / self.m)
+        self.b = self.b - self.learning_rate * (db / self.m)
 
     # Predict the class labels for the input data
     def predict(self, X):

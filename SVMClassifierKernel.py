@@ -40,14 +40,16 @@ class SVMClassifier():
     def calculate_loss(self):
         y_labels = np.where(self.y <= 0, -1, 1)
         
-        if self.kernel == 'rbf':
+        if self.kernel != 'linear':
             # Kernel matrisi ile vektörize hesaplama
             margins = y_labels * (np.dot(self.K, self.w) - self.b)
+            reg = self.lambda_param * (self.w @ (self.K @ self.w))
         else:
             margins = y_labels * (np.dot(self.X, self.w) - self.b)
+            reg = self.lambda_param * (self.w @ self.w)
         
         hinge_loss = np.maximum(0, 1 - margins)
-        loss = np.mean(hinge_loss) + self.lambda_param * np.dot(self.w, self.w)
+        loss = np.mean(hinge_loss) + reg
         
         return loss
 
@@ -55,7 +57,7 @@ class SVMClassifier():
         self.m, self.n = X.shape
         
         # ✅ CALCULATE KERNEL MATRIX ONCE
-        if self.kernel == 'rbf':
+        if self.kernel != 'linear':
             self.K = self.kernel_function(X, X)  # 7000×7000 - only once!
             self.w = np.zeros(self.m)
         else:
@@ -77,18 +79,17 @@ class SVMClassifier():
         
     def update_weights(self):
         y_labels = np.where(self.y <= 0, -1, 1)
-        
-        if self.kernel == 'rbf':
+
+        if self.kernel != 'linear':
             # ✅ Use pre-calculated kernel matrix
             margins = y_labels * (np.dot(self.K, self.w) - self.b)
             
             # Vectorized gradient computation
             misclassified = margins < 1
-            dw = 2 * self.lambda_param * self.w
-            dw -= np.dot(self.K.T, misclassified * y_labels) / self.m
+            dw = 2 * self.lambda_param * (self.K @ self.w)
+            dw -= self.K @ (misclassified * y_labels) / self.m
             
-            db = -np.sum(misclassified * y_labels) / self.m
-            
+            db = np.sum(misclassified * y_labels) / self.m
             self.w -= self.learning_rate * dw
             self.b -= self.learning_rate * db
         else:
@@ -98,13 +99,12 @@ class SVMClassifier():
             dw = 2 * self.lambda_param * self.w
             dw -= np.dot(self.X.T, misclassified * y_labels) / self.m
             
-            db = -np.sum(misclassified * y_labels) / self.m
-            
+            db = np.sum(misclassified * y_labels) / self.m
             self.w -= self.learning_rate * dw
             self.b -= self.learning_rate * db
 
     def predict(self, X):
-        if self.kernel == 'rbf':
+        if self.kernel != 'linear':
             # Calculate kernel for test (between X_train and X_test)
             K_test = self.kernel_function(X, self.X)
             output = np.dot(K_test, self.w) - self.b
