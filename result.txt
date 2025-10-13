@@ -1,0 +1,220 @@
+============================================================
+DATASET EXPLORATION SUMMARY
+============================================================
+
+Dataset Shape: (6497, 13)
+Number of Features: 12
+Number of Samples: 6497
+
+Missing Values:
+  No missing values found ✓
+
+Statistical Summary:
+       fixed acidity  volatile acidity  citric acid  residual sugar    chlorides  free sulfur dioxide  ...      density           pH    sulphates      alcohol      quality    wine_type
+count    6497.000000       6497.000000  6497.000000     6497.000000  6497.000000          6497.000000  ...  6497.000000  6497.000000  6497.000000  6497.000000  6497.000000  6497.000000
+mean        7.215307          0.339666     0.318633        5.443235     0.056034            30.525319  ...     0.994697     3.218501     0.531268    10.491801     0.633061     0.753886
+std         1.296434          0.164636     0.145318        4.757804     0.035034            17.749400  ...     0.002999     0.160787     0.148806     1.192712     0.482007     0.430779
+min         3.800000          0.080000     0.000000        0.600000     0.009000             1.000000  ...     0.987110     2.720000     0.220000     8.000000     0.000000     0.000000
+25%         6.400000          0.230000     0.250000        1.800000     0.038000            17.000000  ...     0.992340     3.110000     0.430000     9.500000     0.000000     1.000000
+50%         7.000000          0.290000     0.310000        3.000000     0.047000            29.000000  ...     0.994890     3.210000     0.510000    10.300000     1.000000     1.000000
+75%         7.700000          0.400000     0.390000        8.100000     0.065000            41.000000  ...     0.996990     3.320000     0.600000    11.300000     1.000000     1.000000
+max        15.900000          1.580000     1.660000       65.800000     0.611000           289.000000  ...     1.038980     4.010000     2.000000    14.900000     1.000000     1.000000
+
+[8 rows x 13 columns]
+
+Class Distribution:
+quality
+1    0.633061
+0    0.366939
+Name: proportion, dtype: float64
+
+Duplicate Rows: 1177
+
+Top 5 Features Correlated with Quality:
+quality                 1.000000
+alcohol                 0.394676
+density                 0.268876
+volatile acidity        0.267046
+chlorides               0.181908
+wine_type               0.116595
+citric acid             0.075739
+fixed acidity           0.067354
+total sulfur dioxide    0.047585
+free sulfur dioxide     0.044819
+sulphates               0.035807
+residual sugar          0.032484
+pH                      0.018842
+Name: quality, dtype: float64
+============================================================
+
+Evaluating parameters: {'learning_rate': 0.01, 'number_of_iterations': 500, 'lambda_param': 0.01, 'kernel': 'linear'}
+Average Accuracy over 5 folds: 0.7261
+Evaluating parameters: {'learning_rate': 0.01, 'number_of_iterations': 500, 'lambda_param': 0.01, 'kernel': 'polynomial', 'degree': 2}
+/home/yagiz/Desktop/machine_learning_project_2025/SVMClassifierKernel.py:46: RuntimeWarning: overflow encountered in matmul
+  reg = self.lambda_param * (self.w @ (self.K @ self.w))
+/home/yagiz/Desktop/machine_learning_project_2025/SVMClassifierKernel.py:89: RuntimeWarning: overflow encountered in matmul
+  dw = 2 * self.lambda_param * (self.K @ self.w)
+/home/yagiz/Desktop/machine_learning_project_2025/SVMClassifierKernel.py:93: RuntimeWarning: invalid value encountered in subtract
+  self.w -= self.learning_rate * dw
+/home/yagiz/.local/lib/python3.12/site-packages/numpy/core/_methods.py:118: RuntimeWarning: overflow encountered in reduce
+  ret = umr_sum(arr, axis, dtype, out, keepdims, where=where)
+Average Accuracy over 5 folds: 0.6281
+Evaluating parameters: {'learning_rate': 0.01, 'number_of_iterations': 500, 'lambda_param': 0.01, 'kernel': 'polynomial', 'degree': 3}
+/home/yagiz/Desktop/machine_learning_project_2025/SVMClassifierKernel.py:46: RuntimeWarning: invalid value encountered in matmul
+  reg = self.lambda_param * (self.w @ (self.K @ self.w))
+/home/yagiz/Desktop/machine_learning_project_2025/SVMClassifierKernel.py:89: RuntimeWarning: invalid value encountered in matmul
+  dw = 2 * self.lambda_param * (self.K @ self.w)
+Average Accuracy over 5 folds: 0.6281
+Evaluating parameters: {'learning_rate': 0.01, 'number_of_iterations': 500, 'lambda_param': 0.01, 'kernel': 'rbf', 'gamma': 0.01}
+Average Accuracy over 5 folds: 0.3717
+Evaluating parameters: {'learning_rate': 0.01, 'number_of_iterations': 500, 'lambda_param': 0.01, 'kernel': 'rbf', 'gamma': 0.1}
+Average Accuracy over 5 folds: 0.6974
+Evaluating parameters: {'learning_rate': 0.01, 'number_of_iterations': 500, 'lambda_param': 0.05, 'kernel': 'linear'}
+Average Accuracy over 5 folds: 0.7216
+Evaluating parameters: {'learning_rate': 0.01, 'number_of_iterations': 500, 'lambda_param': 0.05, 'kernel': 'polynomial', 'degree': 2}
+Average Accuracy over 5 folds: 0.6281
+Evaluating parameters: {'learning_rate': 0.01, 'number_of_iterations': 500, 'lambda_param': 0.05, 'kernel': 'polynomial', 'degree': 3}
+Average Accuracy over 5 folds: 0.6281
+Evaluating parameters: {'learning_rate': 0.01, 'number_of_iterations': 500, 'lambda_param': 0.05, 'kernel': 'rbf', 'gamma': 0.01}
+Average Accuracy over 5 folds: 0.3719
+Evaluating parameters: {'learning_rate': 0.01, 'number_of_iterations': 500, 'lambda_param': 0.05, 'kernel': 'rbf', 'gamma': 0.1}
+Average Accuracy over 5 folds: 0.4886
+Evaluating parameters: {'learning_rate': 0.01, 'number_of_iterations': 1000, 'lambda_param': 0.01, 'kernel': 'linear'}
+Average Accuracy over 5 folds: 0.7357
+Evaluating parameters: {'learning_rate': 0.01, 'number_of_iterations': 1000, 'lambda_param': 0.01, 'kernel': 'polynomial', 'degree': 2}
+Average Accuracy over 5 folds: 0.6281
+Evaluating parameters: {'learning_rate': 0.01, 'number_of_iterations': 1000, 'lambda_param': 0.01, 'kernel': 'polynomial', 'degree': 3}
+Average Accuracy over 5 folds: 0.6281
+Evaluating parameters: {'learning_rate': 0.01, 'number_of_iterations': 1000, 'lambda_param': 0.01, 'kernel': 'rbf', 'gamma': 0.01}
+Average Accuracy over 5 folds: 0.3713
+Evaluating parameters: {'learning_rate': 0.01, 'number_of_iterations': 1000, 'lambda_param': 0.01, 'kernel': 'rbf', 'gamma': 0.1}
+Average Accuracy over 5 folds: 0.6855
+Evaluating parameters: {'learning_rate': 0.01, 'number_of_iterations': 1000, 'lambda_param': 0.05, 'kernel': 'linear'}
+Average Accuracy over 5 folds: 0.7259
+Evaluating parameters: {'learning_rate': 0.01, 'number_of_iterations': 1000, 'lambda_param': 0.05, 'kernel': 'polynomial', 'degree': 2}
+Average Accuracy over 5 folds: 0.6281
+Evaluating parameters: {'learning_rate': 0.01, 'number_of_iterations': 1000, 'lambda_param': 0.05, 'kernel': 'polynomial', 'degree': 3}
+Average Accuracy over 5 folds: 0.6281
+Evaluating parameters: {'learning_rate': 0.01, 'number_of_iterations': 1000, 'lambda_param': 0.05, 'kernel': 'rbf', 'gamma': 0.01}
+Average Accuracy over 5 folds: 0.6281
+Evaluating parameters: {'learning_rate': 0.01, 'number_of_iterations': 1000, 'lambda_param': 0.05, 'kernel': 'rbf', 'gamma': 0.1}
+Average Accuracy over 5 folds: 0.5063
+Evaluating parameters: {'learning_rate': 0.1, 'number_of_iterations': 500, 'lambda_param': 0.01, 'kernel': 'linear'}
+Average Accuracy over 5 folds: 0.7447
+Evaluating parameters: {'learning_rate': 0.1, 'number_of_iterations': 500, 'lambda_param': 0.01, 'kernel': 'polynomial', 'degree': 2}
+Average Accuracy over 5 folds: 0.6281
+Evaluating parameters: {'learning_rate': 0.1, 'number_of_iterations': 500, 'lambda_param': 0.01, 'kernel': 'polynomial', 'degree': 3}
+Average Accuracy over 5 folds: 0.6281
+Evaluating parameters: {'learning_rate': 0.1, 'number_of_iterations': 500, 'lambda_param': 0.01, 'kernel': 'rbf', 'gamma': 0.01}
+Average Accuracy over 5 folds: 0.6281
+Evaluating parameters: {'learning_rate': 0.1, 'number_of_iterations': 500, 'lambda_param': 0.01, 'kernel': 'rbf', 'gamma': 0.1}
+Average Accuracy over 5 folds: 0.3719
+Evaluating parameters: {'learning_rate': 0.1, 'number_of_iterations': 500, 'lambda_param': 0.05, 'kernel': 'linear'}
+Average Accuracy over 5 folds: 0.7293
+Evaluating parameters: {'learning_rate': 0.1, 'number_of_iterations': 500, 'lambda_param': 0.05, 'kernel': 'polynomial', 'degree': 2}
+Average Accuracy over 5 folds: 0.6281
+Evaluating parameters: {'learning_rate': 0.1, 'number_of_iterations': 500, 'lambda_param': 0.05, 'kernel': 'polynomial', 'degree': 3}
+Average Accuracy over 5 folds: 0.6281
+Evaluating parameters: {'learning_rate': 0.1, 'number_of_iterations': 500, 'lambda_param': 0.05, 'kernel': 'rbf', 'gamma': 0.01}
+Average Accuracy over 5 folds: 0.6281
+Evaluating parameters: {'learning_rate': 0.1, 'number_of_iterations': 500, 'lambda_param': 0.05, 'kernel': 'rbf', 'gamma': 0.1}
+Average Accuracy over 5 folds: 0.6281
+Evaluating parameters: {'learning_rate': 0.1, 'number_of_iterations': 1000, 'lambda_param': 0.01, 'kernel': 'linear'}
+Average Accuracy over 5 folds: 0.7453
+Evaluating parameters: {'learning_rate': 0.1, 'number_of_iterations': 1000, 'lambda_param': 0.01, 'kernel': 'polynomial', 'degree': 2}
+Average Accuracy over 5 folds: 0.6281
+Evaluating parameters: {'learning_rate': 0.1, 'number_of_iterations': 1000, 'lambda_param': 0.01, 'kernel': 'polynomial', 'degree': 3}
+Average Accuracy over 5 folds: 0.6281
+Evaluating parameters: {'learning_rate': 0.1, 'number_of_iterations': 1000, 'lambda_param': 0.01, 'kernel': 'rbf', 'gamma': 0.01}
+Average Accuracy over 5 folds: 0.6281
+Evaluating parameters: {'learning_rate': 0.1, 'number_of_iterations': 1000, 'lambda_param': 0.01, 'kernel': 'rbf', 'gamma': 0.1}
+Average Accuracy over 5 folds: 0.3719
+Evaluating parameters: {'learning_rate': 0.1, 'number_of_iterations': 1000, 'lambda_param': 0.05, 'kernel': 'linear'}
+Average Accuracy over 5 folds: 0.7297
+Evaluating parameters: {'learning_rate': 0.1, 'number_of_iterations': 1000, 'lambda_param': 0.05, 'kernel': 'polynomial', 'degree': 2}
+Average Accuracy over 5 folds: 0.6281
+Evaluating parameters: {'learning_rate': 0.1, 'number_of_iterations': 1000, 'lambda_param': 0.05, 'kernel': 'polynomial', 'degree': 3}
+Average Accuracy over 5 folds: 0.6281
+Evaluating parameters: {'learning_rate': 0.1, 'number_of_iterations': 1000, 'lambda_param': 0.05, 'kernel': 'rbf', 'gamma': 0.01}
+Average Accuracy over 5 folds: 0.6281
+Evaluating parameters: {'learning_rate': 0.1, 'number_of_iterations': 1000, 'lambda_param': 0.05, 'kernel': 'rbf', 'gamma': 0.1}
+Average Accuracy over 5 folds: 0.6281
+Best parameters: {'learning_rate': 0.1, 'number_of_iterations': 1000, 'lambda_param': 0.01, 'kernel': 'linear'} with score: 0.7453
+Evaluating parameters: {'learning_rate': 0.01, 'number_of_iterations': 500, 'kernel': 'linear'}
+Average Accuracy over 5 folds: 0.7208
+Evaluating parameters: {'learning_rate': 0.01, 'number_of_iterations': 500, 'kernel': 'polynomial', 'degree': 2}
+/home/yagiz/Desktop/machine_learning_project_2025/LogisticRegressionKernel.py:84: RuntimeWarning: overflow encountered in exp
+  y_hat = 1 / (1 + np.exp(-Z))
+/home/yagiz/Desktop/machine_learning_project_2025/LogisticRegressionKernel.py:71: RuntimeWarning: overflow encountered in exp
+  y_hat = 1 / (1 + np.exp(-Z))
+/home/yagiz/Desktop/machine_learning_project_2025/LogisticRegressionKernel.py:102: RuntimeWarning: overflow encountered in exp
+  y_hat = 1 / (1 + np.exp(-Z))  # Sigmoid function
+Average Accuracy over 5 folds: 0.6306
+Evaluating parameters: {'learning_rate': 0.01, 'number_of_iterations': 500, 'kernel': 'polynomial', 'degree': 3}
+Average Accuracy over 5 folds: 0.6514
+Evaluating parameters: {'learning_rate': 0.01, 'number_of_iterations': 500, 'kernel': 'rbf', 'gamma': 0.01}
+Average Accuracy over 5 folds: 0.6537
+Evaluating parameters: {'learning_rate': 0.01, 'number_of_iterations': 500, 'kernel': 'rbf', 'gamma': 0.1}
+Average Accuracy over 5 folds: 0.7478
+Evaluating parameters: {'learning_rate': 0.01, 'number_of_iterations': 1000, 'kernel': 'linear'}
+Average Accuracy over 5 folds: 0.7293
+Evaluating parameters: {'learning_rate': 0.01, 'number_of_iterations': 1000, 'kernel': 'polynomial', 'degree': 2}
+Average Accuracy over 5 folds: 0.6362
+Evaluating parameters: {'learning_rate': 0.01, 'number_of_iterations': 1000, 'kernel': 'polynomial', 'degree': 3}
+Average Accuracy over 5 folds: 0.6874
+Evaluating parameters: {'learning_rate': 0.01, 'number_of_iterations': 1000, 'kernel': 'rbf', 'gamma': 0.01}
+Average Accuracy over 5 folds: 0.6530
+Evaluating parameters: {'learning_rate': 0.01, 'number_of_iterations': 1000, 'kernel': 'rbf', 'gamma': 0.1}
+Average Accuracy over 5 folds: 0.7551
+Evaluating parameters: {'learning_rate': 0.1, 'number_of_iterations': 500, 'kernel': 'linear'}
+Average Accuracy over 5 folds: 0.7432
+Evaluating parameters: {'learning_rate': 0.1, 'number_of_iterations': 500, 'kernel': 'polynomial', 'degree': 2}
+Average Accuracy over 5 folds: 0.6191
+Evaluating parameters: {'learning_rate': 0.1, 'number_of_iterations': 500, 'kernel': 'polynomial', 'degree': 3}
+Average Accuracy over 5 folds: 0.6781
+Evaluating parameters: {'learning_rate': 0.1, 'number_of_iterations': 500, 'kernel': 'rbf', 'gamma': 0.01}
+Average Accuracy over 5 folds: 0.6503
+Evaluating parameters: {'learning_rate': 0.1, 'number_of_iterations': 500, 'kernel': 'rbf', 'gamma': 0.1}
+Average Accuracy over 5 folds: 0.6760
+Evaluating parameters: {'learning_rate': 0.1, 'number_of_iterations': 1000, 'kernel': 'linear'}
+Average Accuracy over 5 folds: 0.7432
+Evaluating parameters: {'learning_rate': 0.1, 'number_of_iterations': 1000, 'kernel': 'polynomial', 'degree': 2}
+Average Accuracy over 5 folds: 0.6299
+Evaluating parameters: {'learning_rate': 0.1, 'number_of_iterations': 1000, 'kernel': 'polynomial', 'degree': 3}
+Average Accuracy over 5 folds: 0.6710
+Evaluating parameters: {'learning_rate': 0.1, 'number_of_iterations': 1000, 'kernel': 'rbf', 'gamma': 0.01}
+Average Accuracy over 5 folds: 0.5915
+Evaluating parameters: {'learning_rate': 0.1, 'number_of_iterations': 1000, 'kernel': 'rbf', 'gamma': 0.1}
+Average Accuracy over 5 folds: 0.6945
+Best parameters: {'learning_rate': 0.01, 'number_of_iterations': 1000, 'kernel': 'rbf', 'gamma': 0.1} with score: 0.7551
+
+============================================================
+MODEL PERFORMANCE RESULTS
+============================================================
+
+Logistic Regression:
+-------------------------
+  Train Accuracy:  0.7588
+  Test Accuracy:  0.7398
+  Test Precision: 0.7904
+  Test Recall:    0.8184
+  Test F1 Score:  0.8042
+
+SVM Classifier:
+-------------------------
+  Train Accuracy:  0.7491
+  Test Accuracy:  0.7383
+  Test Precision: 0.7829
+  Test Recall:    0.8290
+  Test F1 Score:  0.8053
+
+============================================================
+COMPARISON SUMMARY
+============================================================
+Best Accuracy:  Logistic Regression
+Best Precision: Logistic Regression
+Best Recall:    SVM
+Best F1 Score:  SVM
+============================================================
+/home/yagiz/Desktop/machine_learning_project_2025/main.py:172: UserWarning: This figure includes Axes that are not compatible with tight_layout, so results might be incorrect.
+  plt.tight_layout()

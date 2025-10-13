@@ -1,76 +1,69 @@
-# Machine Learning Project 2025: SVM vs Logistic Regression
+# Wine Quality Classification Project
 
-## Model Definitions
+This project implements and compares Support Vector Machine (SVM) and Logistic Regression classifiers on the Wine Quality dataset. It includes custom kernel support, hyperparameter tuning, cross-validation, and performance visualization.
 
-### 1. Logistic Regression
-Logistic Regression is a binary classification algorithm that models the probability of a sample belonging to a particular class using the sigmoid function.
+## Project Structure
 
-**Mathematical Formulation:**
-- Linear Model: Z = X·W + b
-- Sigmoid Function: σ(Z) = 1 / (1 + e^(-Z))
-- Decision Boundary: y_pred = 1 if σ(Z) ≥ 0.5, else 0
+- `data_preprocessing.py`: Functions for loading, combining, exploring, and preprocessing the wine datasets.
+- `cross_validation.py`: Implements k-fold cross-validation logic.
+- `hyperparameter_tuning.py`: Grid search for hyperparameter optimization.
+- `LogisticRegressionKernel.py`: Custom Logistic Regression implementation with kernel support.
+- `SVMClassifierKernel.py`: Custom SVM implementation with kernel support.
+- `metrics.py`: Functions for calculating accuracy, precision, recall, F1 score, and confusion matrix.
+- `data/`: Contains wine quality datasets (`winequality-red.csv`, `winequality-white.csv`, `winequality.names`).
+- `result.txt`: Stores experiment results (if used).
 
-**Loss Function:** Binary Cross-Entropy
-```
-L = -1/m Σ[y·log(ŷ) + (1-y)·log(1-ŷ)]
-```
+## Features
 
-**Optimization:** Gradient Descent
-- ∂L/∂W = 1/m · X^T · (ŷ - y)
-- ∂L/∂b = 1/m · Σ(ŷ - y)
+- **Custom SVM and Logistic Regression**: Both models support linear, polynomial, and RBF kernels.
+- **Hyperparameter Tuning**: Grid search over learning rate, iterations, regularization, and kernel parameters.
+- **Cross-Validation**: 5-fold cross-validation for robust model selection.
+- **Performance Metrics**: Accuracy, precision, recall, F1 score, and confusion matrix.
+- **Visualization**: Combined plots for confusion matrices, loss curves, and accuracy curves for both models.
 
-**Hyperparameters:**
-- learning_rate: Step size for gradient descent
-- number_of_iterations: Training iterations
-- kernel: Feature transformation ('linear', 'polynomial', 'rbf')
-- degree: Polynomial degree (for polynomial kernel)
-- gamma: RBF kernel parameter
+## Usage
 
-### 2. Support Vector Machine (SVM)
-SVM finds the optimal hyperplane that maximizes the margin between classes.
+1. **Install Requirements**
+   - Python 3.8+
+   - Required packages: `numpy`, `matplotlib`, `seaborn`, `pandas`
+   - Install with:
+     ```bash
+     pip install numpy matplotlib seaborn pandas
+     ```
 
-**Mathematical Formulation:**
-- Decision Function: f(x) = W·X - b
-- Prediction: y = sign(f(x))
+2. **Run the Project**
+   ```bash
+   python main.py
+   ```
 
-**Loss Function:** Hinge Loss with L2 Regularization
-```
-L = 1/m Σ max(0, 1 - y_i·f(x_i)) + λ·||W||²
-```
+3. **Results**
+   - Model performance metrics and visualizations will be displayed.
+   - Comparison summary will show which model performed better on each metric.
 
-**Optimization:** Gradient Descent on Primal Form
-- If y_i·f(x_i) ≥ 1: ∂L/∂W = 2λW
-- Else: ∂L/∂W = 2λW - y_i·x_i
+## How It Works
 
-**Hyperparameters:**
-- learning_rate: Step size for gradient descent
-- number_of_iterations: Training iterations
-- lambda_param: Regularization strength
-- kernel: Feature transformation ('linear', 'polynomial', 'rbf')
-- degree: Polynomial degree (for polynomial kernel)
-- gamma: RBF kernel parameter
+- Loads and combines red and white wine datasets.
+- Preprocesses data (scaling, splitting).
+- Performs grid search hyperparameter tuning for SVM and Logistic Regression.
+- Trains final models with best parameters.
+- Evaluates and compares models using multiple metrics.
+- Visualizes results in a single figure.
 
-## Implementation Details
+## How to Run
 
-### Kernel Functions
-Both models support three kernel types:
+1. **Install Python and Required Packages**
+   - Make sure you have Python 3.8 or newer installed.
+   - Install dependencies:
+     ```bash
+     pip install numpy matplotlib seaborn pandas
+     ```
 
-1. **Linear Kernel:** K(x₁, x₂) = x₁·x₂
-2. **Polynomial Kernel:** K(x₁, x₂) = (x₁·x₂ + 1)^d
-3. **RBF Kernel:** K(x₁, x₂) = exp(-γ·||x₁ - x₂||²)
+2. **Run the Main Script**
+   - Open a terminal in the project directory.
+   - Execute:
+     ```bash
+     python main.py
+     ```
 
-### Hyperparameter Tuning
-- Method: Grid Search with 5-Fold Cross-Validation
-- Evaluation Metric: Accuracy
-- Models evaluated on: Accuracy, Recall, F1-Score
-
-### Dataset
-Wine Quality Dataset (Red + White wines combined)
-- Binary classification: Good quality (≥7) vs Poor quality (<7)
-- Features: 11 physicochemical properties
-- Preprocessing: Standard Scaling
-
-## Performance Metrics
-- **Accuracy:** (TP + TN) / (TP + TN + FP + FN)
-- **Recall:** TP / (TP + FN)
-- **F1-Score:** 2 · (Precision · Recall) / (Precision + Recall)
+3. **View Results**
+   - Performance metrics and visualizations will be displayed in the terminal and as plots.
