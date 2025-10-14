@@ -4,6 +4,7 @@ from metrics import Metrics
 class SVMClassifier():
     
     def __init__(self, learning_rate=0.001, number_of_iterations=1000, lambda_param=0.01, kernel='linear', degree=3, gamma=1.0):
+        # Initializes the SVM classifier and its parameters
         self.learning_rate = learning_rate
         self.number_of_iterations = number_of_iterations
         self.lambda_param = lambda_param
@@ -20,7 +21,7 @@ class SVMClassifier():
         self.accuracy_history = []
 
     def kernel_function(self, X1, X2=None):
-        """Vectorized kernel computation"""
+        # Computes the kernel matrix between X1 and X2
         if X2 is None:
             X2 = X1
             
@@ -38,10 +39,10 @@ class SVMClassifier():
             return np.dot(X1, X2.T)
 
     def calculate_loss(self):
+        # Calculates the loss value for current weights
         y_labels = np.where(self.y <= 0, -1, 1)
         
         if self.kernel != 'linear':
-            # Kernel matrisi ile vektörize hesaplama
             margins = y_labels * (np.dot(self.K, self.w) - self.b)
             reg = self.lambda_param * (self.w @ (self.K @ self.w))
         else:
@@ -54,11 +55,11 @@ class SVMClassifier():
         return loss
 
     def fit(self, X, y):
+        # Trains the SVM model on the given data
         self.m, self.n = X.shape
         
-        # ✅ CALCULATE KERNEL MATRIX ONCE
         if self.kernel != 'linear':
-            self.K = self.kernel_function(X, X)  # 7000×7000 - only once!
+            self.K = self.kernel_function(X, X)
             self.w = np.zeros(self.m)
         else:
             self.w = np.zeros(self.n)
@@ -78,10 +79,11 @@ class SVMClassifier():
                 self.accuracy_history.append(accuracy)
         
     def update_weights(self):
+        # Updates the model weights using gradient descent
         y_labels = np.where(self.y <= 0, -1, 1)
 
         if self.kernel != 'linear':
-            # ✅ Use pre-calculated kernel matrix
+            # Use pre-calculated kernel matrix
             margins = y_labels * (np.dot(self.K, self.w) - self.b)
             
             # Vectorized gradient computation
@@ -104,6 +106,7 @@ class SVMClassifier():
             self.b -= self.learning_rate * db
 
     def predict(self, X):
+        # Predicts class labels for the input data
         if self.kernel != 'linear':
             # Calculate kernel for test (between X_train and X_test)
             K_test = self.kernel_function(X, self.X)

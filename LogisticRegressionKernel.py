@@ -2,7 +2,7 @@ import numpy as np
 from metrics import Metrics
 
 class LogisticRegression:
-    # declaring the hyperparameters: learning_rate, number_of_iterations, kernel, degree, gamma
+    # Initializes the logistic regression model and its hyperparameters
     def __init__(self, learning_rate=0.01, number_of_iterations=1000, kernel='linear', degree=2, gamma=1.0):
         self.learning_rate = learning_rate
         self.number_of_iterations = number_of_iterations
@@ -15,8 +15,8 @@ class LogisticRegression:
         self.loss_history = []  # Track loss over iterations
         self.accuracy_history = []  # Track accuracy over iterations
     
+    # Computes the kernel matrix between X1 and X2
     def kernel_function(self, X1, X2=None):
-        """Apply kernel transformation"""
         if X2 is None:
             X2 = X1
             
@@ -34,6 +34,7 @@ class LogisticRegression:
         else:
             raise ValueError("Unsupported kernel type. Use 'linear', 'polynomial', or 'rbf'")
     
+    # Calculates binary cross-entropy loss
     def calculate_loss(self, y_hat, y):
         """Calculate binary cross-entropy loss"""
         # Clip predictions to prevent log(0)
@@ -44,7 +45,7 @@ class LogisticRegression:
         loss = -np.mean(y * np.log(y_hat) + (1 - y) * np.log(1 - y_hat))
         return loss
     
-    # Fit the model to the training data
+    # Fits the model to the training data
     def fit(self, X, y):
         self.X_train = X  # Store training data
         
@@ -77,6 +78,7 @@ class LogisticRegression:
                 accuracy = Metrics.accuracy(self.y, y_pred)
                 self.accuracy_history.append(accuracy)
     
+    # Updates the model weights using gradient descent
     def update_weights(self):
         
         # linear model which is Z = X.W + b and then applying sigmoid function(y^ = 1 / (1 + e^(-Z)))
@@ -91,6 +93,7 @@ class LogisticRegression:
         self.weights -= self.learning_rate * dw
         self.bias -= self.learning_rate * db
 
+    # Predicts class labels for the input data
     def predict(self, X):
         # Apply kernel transformation
         if self.kernel == 'linear':

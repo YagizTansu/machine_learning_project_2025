@@ -4,13 +4,13 @@ from itertools import product
 
 class HyperparameterTuning:
     def __init__(self, model, param_grid, k_folds=5):
+        # Initializes the hyperparameter tuning object
         self.model = model
         self.param_grid = param_grid
         self.k_folds = k_folds
 
     def _generate_param_combinations(self):
-        """Generate all parameter combinations from param_grid."""
-        # Separate common params from kernel-specific params
+        # Generates all combinations of hyperparameters from the grid
         common_params = {}
         kernel_configs = []
         
@@ -40,6 +40,7 @@ class HyperparameterTuning:
         return all_combinations
 
     def grid_search(self, X, y):
+        # Performs grid search to find the best hyperparameters
         best_params = None
         best_score = 0
 

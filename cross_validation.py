@@ -1,12 +1,13 @@
-
 import numpy as np
 
 class CrossValidation:
     def __init__(self, model, k_folds=5):
+        # Initializes the cross-validation object with model and number of folds
         self.model = model
         self.k_folds = k_folds
 
     def split_data(self, X, y):
+        # Splits the data into k folds for cross-validation
         fold_size = len(X) // self.k_folds
         indices = np.arange(len(X))
         np.random.shuffle(indices)
@@ -22,6 +23,7 @@ class CrossValidation:
         return folds
 
     def evaluate(self, X, y):
+        # Evaluates the model using k-fold cross-validation
         folds = self.split_data(X, y)
         accuracies = []
 
