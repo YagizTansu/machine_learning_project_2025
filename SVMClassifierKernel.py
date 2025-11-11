@@ -96,12 +96,11 @@ class SVMClassifier():
             self.b -= self.learning_rate * db
         else:
             margins = y_labels * (np.dot(self.X, self.w) - self.b)
-            
             misclassified = margins < 1
-            dw = 2 * self.lambda_param * self.w
-            dw -= np.dot(self.X.T, misclassified * y_labels) / self.m
-            
+
+            dw = (2 * self.lambda_param * self.w) - (np.dot(self.X.T, misclassified * y_labels) / self.m)
             db = np.sum(misclassified * y_labels) / self.m
+            
             self.w -= self.learning_rate * dw
             self.b -= self.learning_rate * db
 
