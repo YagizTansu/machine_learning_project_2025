@@ -21,8 +21,10 @@ class LogisticRegression:
             X2 = X1
             
         if self.kernel == 'linear':
+            # Linear kernel: K(x, y) = x.y
             return np.dot(X1, X2.T)
         elif self.kernel == 'polynomial':
+            # Polynomial kernel: K(x, y) = (x.y + 1)^degree
             return (np.dot(X1, X2.T) + 1) ** self.degree
         elif self.kernel == 'rbf':
             # RBF kernel: K(x, y) = exp(-gamma * ||x - y||^2)
