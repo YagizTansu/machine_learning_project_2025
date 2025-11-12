@@ -12,7 +12,7 @@ def custom_train_test_split(X, y, test_size=0.2, random_state=42):
     
     # Generate random indices
     indices = np.arange(n_samples)
-    np.random.shuffle(indices)
+    np.random.shuffle(indices) #important for randomness data distribution
     
     # Split indices
     test_indices = indices[:n_test]
@@ -45,11 +45,9 @@ def load_and_combine_datasets():
     return combined_wine
 
 def split_and_prepare_data(df):
-    # Split into features and target
     X = df.drop('quality', axis=1)
     y = df['quality']
 
-    # Split into training (80%) and test (20%) sets using custom function
     X_train, X_test, y_train, y_test = custom_train_test_split(X, y, test_size=0.2, random_state=42)
 
     return X_train, X_test, y_train, y_test

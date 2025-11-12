@@ -85,13 +85,12 @@ class SVMClassifier():
         if self.kernel != 'linear':
             # Use pre-calculated kernel matrix
             margins = y_labels * (np.dot(self.K, self.w) - self.b)
-            
             # Vectorized gradient computation
             misclassified = margins < 1
-            dw = 2 * self.lambda_param * (self.K @ self.w)
-            dw -= self.K @ (misclassified * y_labels) / self.m
             
+            dw = (2 * self.lambda_param * (self.K @ self.w)) - self.K @ (misclassified * y_labels) / self.m
             db = np.sum(misclassified * y_labels) / self.m
+            
             self.w -= self.learning_rate * dw
             self.b -= self.learning_rate * db
         else:
