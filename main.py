@@ -8,7 +8,6 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 
 def main():
-    """Main function to run the SVM classifier on the wine quality dataset."""
     # Load and combine datasets
     combined_wine = dp.load_and_combine_datasets()
     

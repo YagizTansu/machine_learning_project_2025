@@ -53,6 +53,7 @@ def split_and_prepare_data(df):
     return X_train, X_test, y_train, y_test
 
 def StandardScaler(X_train, X_test):
+    # z-score normalization
     mean = X_train.mean()
     std = X_train.std()
     X_train_scaled = (X_train - mean) / std

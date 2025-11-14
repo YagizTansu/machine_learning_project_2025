@@ -12,10 +12,10 @@ class SVMClassifier():
         self.degree = degree
         self.gamma = gamma
 
-        self.w = None
-        self.b = None
-        self.X = None
-        self.y = None
+        self.w = None  # weights matrix
+        self.b = None  # bias term
+        self.X = None # feature matrix
+        self.y = None # labels vector
         self.K = None  # For kernel matrix
         self.loss_history = []
         self.accuracy_history = []
@@ -84,8 +84,10 @@ class SVMClassifier():
 
         if self.kernel != 'linear':
             # Use pre-calculated kernel matrix
+            # margins: means that how much each sample is correctly classified
             margins = y_labels * (np.dot(self.K, self.w) - self.b)
-            # Vectorized gradient computation
+            
+            # if margin < 1, then misclassified
             misclassified = margins < 1
             
             dw = (2 * self.lambda_param * (self.K @ self.w)) - self.K @ (misclassified * y_labels) / self.m
@@ -106,10 +108,12 @@ class SVMClassifier():
     def predict(self, X):
         # Predicts class labels for the input data
         if self.kernel != 'linear':
-            # Calculate kernel for test (between X_train and X_test)
             K_test = self.kernel_function(X, self.X)
+            
+            #output: meaning distance from hyperplane
             output = np.dot(K_test, self.w) - self.b
         else:
+            #output: meaning distance from hyperplane
             output = np.dot(X, self.w) - self.b
         
         predicted_labels = np.sign(output)

@@ -38,8 +38,7 @@ class LogisticRegression:
     
     # Calculates binary cross-entropy loss
     def calculate_loss(self, y_hat, y):
-        """Calculate binary cross-entropy loss"""
-        # Clip predictions to prevent log(0)
+        # Clip predictions to prevent log(0) = inf
         epsilon = 1e-15
         y_hat = np.clip(y_hat, epsilon, 1 - epsilon)
         
@@ -87,8 +86,8 @@ class LogisticRegression:
         Z = np.dot(self.X, self.weights) + self.bias
         y_hat = 1 / (1 + np.exp(-Z))
 
-        # partial derivatives
-        dw = (1 / self.m) * np.dot(self.X.T, (y_hat - self.y))
+        # partial derivatives of log loss with respect to weights and bias
+        dw = (1 / self.m) * np.dot (self.X.T,(y_hat - self.y))
         db = (1 / self.m) * np.sum(y_hat - self.y)
         
         # update weights and bias
@@ -103,7 +102,7 @@ class LogisticRegression:
         else:  # polynomial or rbf kernel
             X_transformed = self.kernel_function(X, self.X_train)
             
-        Z = np.dot(X_transformed, self.weights) + self.bias
+        Z = np.dot(X_transformed, self.weights) + self.bias # linear model
         y_hat = 1 / (1 + np.exp(-Z))  # Sigmoid function
         y_hat = np.where(y_hat <= 0.5, 0, 1)  # Convert probabilities to class labels
         return y_hat
